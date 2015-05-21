@@ -1,0 +1,26 @@
+!!!
+%html{app: 'videopage7'}
+  %head
+    %title Videopage7
+    = render 'shared/meta_tags'
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+
+    = yield :head
+  %body
+    - if !current_account.blank? && (current_account == @current_author || @current_author.blank?)
+      = render "layouts/header_admin"
+    - else
+      = render "layouts/header_public"
+
+    .container-fluid.mt2
+
+      .container
+        .bgwhite
+          .row
+            .col-md-12
+              = render "/shared/flashes"
+              = yield
+      = render "layouts/footer"
+      = yield :javascript

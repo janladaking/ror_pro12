@@ -1,0 +1,25 @@
+%table.row
+  %tr
+    %td.wrapper.last
+      %table.twelve.columns
+        %tr
+          %td
+            %h1= @post.title
+            %p.lead
+              Posted by #{@author.full_name}
+            %p= @post.excerpt
+            %p= link_to post_url(@post, host: @host) do |
+                    image_tag(@post.screenshot)         |
+                end                                     |
+          %td.expander
+%table.row.callout
+  %tr
+    %td.wrapper.last
+      %table.twelve.columns
+        %tr
+          %td.readarticle
+            %p
+              Please click here to read full article.
+              %br
+              \#{link_to post_url(@post, host: @host), post_url(@post, host: @host)}
+          %td.expander

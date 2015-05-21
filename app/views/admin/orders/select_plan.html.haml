@@ -1,0 +1,136 @@
+- if current_account
+  = render 'admin/shared/setting_tabs'
+
+#plans
+  %h2 Select Plan
+  .shortline.mb2
+
+  .row
+    %ul.col-md-4
+      %li.plan-head
+        %h3 Free
+      %li.plan-image
+        = image_tag 'videopage7_free.png'
+        %span.price.price-year
+          %span= plan_price_with_symbol(0)
+          %span.price-small Free
+        %span.price.price-month
+          %span Create your videopage now!
+      %li.yes
+        Create ONE videopage
+      %li.yes
+        Use Your Own Domain
+      %li.yes
+        500MB space
+      %li.no
+        Post Unlimited Videos (Maximum of 5)
+      %li.no
+        Place Your Videos In "Successes" Category
+      %li.no
+        Upload Your Custom Logo
+      %li.upgrade.noborder
+        Create your videopage for free
+      %li.buy.free
+        - case current_account && current_account.upgrade_plan_status(Plan.free_plan, Plan.free_plan_duration)
+        - when :current
+          = link_to 'Current plan', '#', class: 'btn disabled', disabled: true
+        - else
+          - if current_account
+            = link_to "Can't upgrade", '#', class: 'btn disabled', disabled: true
+          - else
+            = link_to "REGISTER", new_account_session_path
+
+    %ul.col-md-4
+      %li.plan-head
+        %h3 Pro
+      %li.plan-image
+        = image_tag 'videopage7_pro.png'
+        %span.price
+          %span= plan_price_with_symbol(Plan.pro_plan.price_cents[12])
+          %span.price-small= plan_duration_human(12)
+        %span.price.price-month
+          %span or
+          %span= plan_price_with_symbol(Plan.pro_plan.price_cents[1])
+          %span.price-small / #{plan_duration_human(1)}
+      %li.yes
+        Create ONE videopage
+      %li.yes
+        Use Your Own Domain
+      %li.yes
+        5GB space
+      %li.yes
+        Post Unlimited Videos
+      %li.yes
+        Place Your Videos In "Successes" Category
+      %li.yes
+        Upload Your Custom Logo
+      %li.upgrade.noborder
+        Upgrade to PRO
+      %li.buy
+        -#= link_to '1 year', new_admin_order_path(plan: 'pro', duration: 12), class: 'pull-left'
+        - case current_account && current_account.upgrade_plan_status(Plan.pro_plan, 12)
+        - when :current
+          = link_to 'Current plan', '#', class: 'btn pull-left', disabled: true
+        - when :can_upgrade
+          = link_to plan_duration_human(12), new_admin_order_path(plan: 'pro', duration: 12), class: 'pull-left'
+        - else
+          = link_to "Can't upgrade", '#', class: 'btn pull-left', disabled: true
+
+        -#= link_to '1 month', new_admin_order_path(plan: 'pro', duration: 1), class: 'pull-right'
+        - case current_account && current_account.upgrade_plan_status(Plan.pro_plan, 1)
+        - when :current
+          = link_to 'Current plan', '#', class: 'btn pull-right', disabled: true
+        - when :can_upgrade
+          = link_to plan_duration_human(1), new_admin_order_path(plan: 'pro', duration: 1), class: 'pull-right'
+        - else
+          = link_to "Can't upgrade", '#', class: 'btn pull-right', disabled: true
+
+    %ul.col-md-4
+      %li.plan-head
+        %h3 Expert
+      %li.plan-image
+        = image_tag 'videopage7_expert.png'
+        %span.price
+          %span= plan_price_with_symbol(Plan.expert_plan.price_cents[12])
+          %span.price-small= plan_duration_human(12)
+        %span.price.price-month
+          %span or
+          %span= plan_price_with_symbol(Plan.expert_plan.price_cents[1])
+          %span.price-small / #{plan_duration_human(1)}
+      %li.yes
+        Create ONE videopage
+      %li.yes
+        Use Your Own Domain
+      %li.yes
+        10GB space
+      %li.yes
+        Post Unlimited Videos
+      %li.yes
+        Place Your Videos In "Successes" Category
+      %li.yes
+        Upload Your Custom Logo
+      %li.upgrade.noborder
+        Upgrade to EXPERT
+      %li.buy
+        -#= link_to '1 year', new_admin_order_path(plan: 'expert', duration: 12), class: 'pull-left'
+        - case current_account && current_account.upgrade_plan_status(Plan.expert_plan, 12)
+        - when :current
+          = link_to 'Current plan', '#', class: 'btn pull-left', disabled: true
+        - when :can_upgrade
+          = link_to plan_duration_human(12), new_admin_order_path(plan: 'expert', duration: 12), class: 'pull-left'
+        - else
+          = link_to "Can't upgrade", '#', class: 'btn pull-left', disabled: true
+
+        -#= link_to '1 month', new_admin_order_path(plan: 'expert', duration: 1), class: 'pull-right'
+        - case current_account && current_account.upgrade_plan_status(Plan.expert_plan, 1)
+        - when :current
+          = link_to 'Current plan', '#', class: 'btn pull-right', disabled: true
+        - when :can_upgrade
+          = link_to plan_duration_human(1), new_admin_order_path(plan: 'expert', duration: 1), class: 'pull-right'
+        - else
+          = link_to "Can't upgrade", '#', class: 'btn pull-right', disabled: true
+
+  - if current_account
+    .row.mt2
+      .col-md-12.text-right
+        = link_to 'Cancel', admin_orders_path, class: 'btn btn-default'

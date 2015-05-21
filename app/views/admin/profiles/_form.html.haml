@@ -1,0 +1,30 @@
+= bootstrap_form_for(@profile, layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-9", url: admin_profile_path) do |f|
+
+  .form-group
+    %label.control-label.col-sm-3
+      Email
+    .col-sm-9
+      .form-control
+        = @profile.account.email
+      %p.help-block
+        Email field is not editable.
+
+      %p
+        = check_box_tag 'account_profile[private_fields][]', 'email', @profile.email_private?, id: 'account_profile_email_private'
+        %label{ for: 'account_profile_email_private' }
+          make private
+
+  = f.text_field :first_name
+  = f.text_field :last_name
+  - if !@profile.avatar.blank?
+    = f.form_group do
+      = image_tag(@profile.avatar_url, :class => 'img-responsive editprofileimg')
+      = f.check_box :remove_avatar
+  - else
+    = f.file_field :avatar
+
+  = f.text_area :description
+  %hr
+  = f.form_group do
+    = f.submit "Save", class: 'btn btn-primary'
+    = link_to 'Cancel', :back, class: 'btn btn-default'

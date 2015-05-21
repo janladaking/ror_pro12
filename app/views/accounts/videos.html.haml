@@ -1,0 +1,23 @@
+= render 'profile_videos_tabs'
+
+#profile-videos.row.mt2
+  - @posts.each_with_index do |post, index|
+    .col-sm-3.col-xs-12
+      = link_to post_path(post), :class => 'profile-video' do
+        %span.prelative.show
+          = image_tag post.screenshot, class: 'img-responsive'
+          .video-hv
+            %span.glyphicon.glyphicon-circle-arrow-right
+
+      %h5= post.title
+
+    - if (index+1) % 4 == 0
+      .clearfix
+    - if (index+1) % 2 == 0
+      .clearfix.visible-xs-block
+
+
+.row
+  .col-md-9
+    = paginate @posts
+    

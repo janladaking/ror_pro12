@@ -1,0 +1,53 @@
+= render 'admin/shared/setting_tabs'
+
+%h2 Purchase
+.shortline.mb2
+
+%legend Order Summary
+.col-sm-12
+  %div.table-responsive
+    %table.table.table-bordered
+      %tr
+        %td Plan
+        %td= @order.plan.name
+      %tr
+        %td Duration
+        %td= plan_duration_human(@order.plan_duration)
+      %tr
+        %td Price
+        %td= money_with_cents_and_with_symbol(@order.subtotal)
+      %tr
+        %td Tax (#{percentage_with_symbol(@order.tax_percentage)})
+        %td= money_with_cents_and_with_symbol(@order.tax)
+      %tr
+        %td Total
+        %td= money_with_cents_and_with_symbol(@order.total)
+
+
+= bootstrap_form_for [:admin, @order], layout: :horizontal, label_col: 'col-sm-2', control_col: 'col-sm-8' do |f|
+  = f.hidden_field :plan_type
+  = f.hidden_field :plan_duration
+
+  %legend Card Information
+  = f.text_field :first_name, required: true
+  = f.text_field :last_name, required: true
+  = f.text_field :number, required: true, label: 'Card number'
+  = f.select :year, (Date.today.year..(Date.today.year + 10)), required: true
+  = f.select :month, (1..12), required: true
+  = f.text_field :verification_value, required: true, label: 'CVV'
+
+  %legend Billing Address
+  = f.fields_for :billing_address do |a|
+    = a.text_field :address_1, required: true
+    = a.text_field :address_2
+    = a.text_field :city, required: true
+    = a.text_field :state, required: true
+    = a.text_field :postal_code, required: true
+
+    = a.form_group :country_code, label: { text: 'Country' } do
+      = a.country_select :country_code, { prompt: 'Please select a country' }, required: true, class: 'form-control'
+
+  %hr
+  = f.form_group do
+    = f.submit 'Process Payment', class: 'btn btn-primary', confirm: "Are you sure to create this order?"
+    = link_to 'Cancel', admin_orders_path, class: 'btn btn-default'

@@ -1,0 +1,23 @@
+%table.row
+  %tr
+    %td.wrapper.last
+      %table.twelve.columns
+        %tr
+          %td
+            %h3 Hi, #{@account.full_name}
+            %p.lead
+              Your payment has been completed successfully.
+            %p
+              %b Payment information:
+              %br
+              Sub Total:
+              = money_with_cents_and_with_symbol(@order.subtotal)
+              %br
+              Tax (#{percentage_with_symbol(@order.tax_percentage)}):
+              = money_with_cents_and_with_symbol(@order.tax)
+              %br
+              Total:
+              = money_with_cents_and_with_symbol(@order.total)
+              %br
+              Expired at:
+              = @order.expired_at

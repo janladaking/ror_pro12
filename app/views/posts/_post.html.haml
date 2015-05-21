@@ -1,0 +1,39 @@
+.post.col-md-6
+  .bgwhite
+    .row.video-thumb.nomargin
+      .col-md-12.nopadding
+        .video-container
+          - unless post.video_url.blank?
+            = post.video_url_html
+          - else
+            - if post.video.present? and post.video.encoded?
+              %video{preload: "auto", poster: post.video.screenshot, controls: true, width:'100%'}
+                - post.video.encodings.each do |encoding|
+                  %source{:src => encoding.url, :type => encoding.mime_type}/
+
+    .row.post-top
+      .col-md-12.nopadding
+        %span.post-meta
+          = post.created_at.strftime( '%D' )
+          |
+          %span
+            From
+            = link_to post.account.full_name, root_url(host: "#{post.account.blog_alias}.#{request.domain}")
+            |
+          %span
+            = post.comments.count
+            comments
+      .col-md-12.nopadding
+        %h2.post-title
+          = link_to post.title, post_path(post)
+        .shortline
+    .row.excerpt
+      .col-md-12
+        = strip_tags post.the_excerpt
+    .row
+      %a.read.text-right{:href => post_path(post), :alt => ''}
+        %span.text-left.pull-left.search-text Continue reading
+        - if !post.category.blank?
+          %span.glyphicon.glyphicon-star.pull-right{ class: "#{post.category.name.downcase}-post", title: 'Success'}
+        %span.glyphicon.glyphicon-circle-arrow-right.searchicon
+        %span.clearfix

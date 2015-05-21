@@ -1,0 +1,63 @@
+= render 'admin/posts/form_tabs'
+%br
+= bootstrap_form_for([:admin, @post], layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f|
+  .row
+    .col-md-6
+      = f.text_field :title
+      - if current_account.can_use_post_category?
+        = f.collection_select :category_id, [['', 'None']] + Category.options_for_select, :first, :last
+      .form-group
+        %label.control-label.col-sm-2{:for => "post_content"} Content
+        .col-sm-10
+          = f.bootsy_area :content, class: 'form-control', rows: 6
+      = f.text_area :excerpt, rows: 6
+    .col-md-6
+      = f.text_field :video_url
+      = f.form_group do
+        .help
+          %p Please input youtubue or vimeo url, or just upload your video.
+      - unless @post.video_url.blank?
+        = f.form_group do
+          .video-container
+            = @post.video_url_html
+      - if @post.video_url.blank?
+        = f.form_group do
+          - unless @post.video.blank?
+            - unless @post.video.encoded?
+              %strong Video Status:
+              In progress
+            - unless @post.video.screenshot.blank?
+              = image_tag @post.video.screenshot, id: "video_screenshot", class: "img-responsive"
+          - else
+            No video file.
+
+        = f.form_group do
+          - unless @post.new_record?
+            - if @post.video.present?
+              = link_to 'Video Detail', edit_admin_post_video_path(@post, @video), class: 'btn btn-info'
+              = link_to 'Remove Video', admin_post_video_path(@post, @video), class: 'btn btn-danger', method: :delete, data: { confirm: "Are you sure?" }
+            - else
+              = link_to 'Upload Video', new_admin_post_video_path(@post), class: 'btn btn-default'
+          -else
+            = f.submit "Save draft and upload a video", class: 'btn btn-warning'
+      .form-group
+        %label.control-label.col-sm-2 Status
+        .col-sm-10
+          %label.control-label= @post.status
+      %hr
+
+      .text-right
+        = f.form_group do
+          - if @post.valid?
+            - if @post.published
+              = link_to 'Unpublish', unpublish_admin_post_path(@post), class: 'btn btn-primary', method: :put
+            - else
+              = link_to 'Publish', publish_admin_post_path(@post), class: 'btn btn-primary', method: :put
+
+
+          = f.submit "Save", class: 'btn btn-secondary'
+
+          - unless @post.new_record?
+            = link_to "Delete", admin_post_path(@post), method: :delete, data:{ confirm: "Are yo sure to delete?" }, class: 'btn btn-danger'
+
+          = link_to "Back", admin_path, class: 'btn btn-default'

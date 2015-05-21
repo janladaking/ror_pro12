@@ -1,0 +1,5 @@
+= tabs_tag :open_tabs=>{ class: 'nav nav-tabs' } do |tab|
+  = tab.all "All (#{current_account.posts_for('all').count})", admin_posts_path
+  = tab.published "Published (#{current_account.posts_for('published').count})", admin_posts_path(status: 'published')
+  = tab.draft "Draft (#{current_account.posts_for('draft').count})", admin_posts_path(status: 'draft')
+  = tab.trash "Trash (#{current_account.posts_for('trash').count})", admin_posts_path(status: 'trash')

@@ -1,0 +1,5 @@
+%h2= @account.full_name
+.shortline
+= tabs_tag :open_tabs=>{ class: 'nav nav-tabs' } do |tab|
+  = tab.profile 'Profile', account_path(@account)
+  = tab.videos 'Videos', videos_account_path(@account)

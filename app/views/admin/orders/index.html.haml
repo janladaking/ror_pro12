@@ -1,0 +1,59 @@
+= render 'admin/shared/setting_tabs'
+
+%h2 Orders
+.shortline.mb2
+
+%div.table-responsive
+  %table.table.table-striped.table-bordered.table-condensed
+    %thead
+      %tr
+        %th Method
+        %th Plan
+        %th Duration
+        %th Sub total
+        %th Tax
+        %th Total
+        %th Expired at
+        %th Status
+        %th Paid at
+        %th Invoice
+    %tbody
+      - if @orders.count > 0
+        - @orders.each do |order|
+          %tr
+            %td= order.payment_method
+            %td= order.plan.name
+            %td= plan_duration_human(order.plan_duration)
+            %td= money_with_cents_and_with_symbol order.subtotal
+            %td= money_with_cents_and_with_symbol order.tax
+            %td= money_with_cents_and_with_symbol order.total
+            %td= order.expired_at
+            %td
+              - case order.status
+              - when 'active'
+                %span.label.label-success Active
+              - when 'cancelled'
+                %span.label.label-warning Canceled
+              - when 'failed'
+                %span.label.label-danger Failed
+              - else
+                %span.label.label-default= order.status.titleize
+            %td= order.created_at.to_date
+            %td
+              /
+                = order.id
+
+              - if order.invoice_file?
+                = link_to 'Download Invoice', order.invoice_file.url, :class => 'btn btn-default btn-xs btn-action'
+
+      - else
+        %tr
+          %td{colspan: 10} You have no orders
+
+  .clearfix
+  - if current_account.active_order && !current_account.active_order.baio_order?
+    .pull-right
+      %i Please contact admin if you want to cancel active plan
+
+
+= link_to 'Upgrade your plan', new_admin_order_path, class: 'btn btn-primary'

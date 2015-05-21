@@ -1,0 +1,13 @@
+%p.text-right
+  = link_to "Close Window", "#", onclick: "window.opener.close_window();", class: "btn btn-primary"
+
+.col-sm-12
+  - @videos.each do |video|
+    .col-sm-3
+      %p
+        = image_tag video.screenshot, class: "img-responsive"
+        = video.humanized_title
+      %p
+        = link_to "Select", '#', onclick: "window.opener.select_video(#{video.to_json});",  class: 'btn btn-primary' 
+
+= paginate @videos

@@ -1,0 +1,18 @@
+!!!
+%html{app: 'videopage7'}
+  %head
+    %title Videopage7 Backend
+    = render 'shared/meta_tags'
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    %script{:src => "//cdn.pandastream.com/u/2.1/panda-uploader.min.js"}
+  %body
+    .container-fluid.nopadding.nomargin
+      = render "layouts/header_admin"
+      .container.mt2
+        = render "/shared/flashes"
+        .bgwhite
+          = yield
+
+    = yield :javascript

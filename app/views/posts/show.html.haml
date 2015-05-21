@@ -1,0 +1,64 @@
+#post-single
+  .container.showpost
+    .row.nomargin
+      .col-md-9.bgwhite
+        .video-container
+          - unless @post.video_url.blank?
+            = @post.video_url_html
+          - else
+            - if @post.video.present? and @post.video.encoded?
+              %video{ poster: @post.video.screenshot, controls: true, width: @post.video.width, height: @post.video.height, autoplay: true }
+                - @post.video.encodings.each do |encoding|
+                  %source{:src => encoding.url, :type => encoding.mime_type}/
+            - else
+              .alert.alert-info
+                %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} ×
+                Video is not ready now...
+
+        %span.post-meta
+          %span
+            Posted At:
+            = distance_of_time_in_words(Time.now - @post.created_at)
+            ago
+            |
+          %span
+            Views:
+            = @post.views_count
+            |
+          %span
+            Comments:
+            = @post.comments.count
+            |
+          %span
+            Author:
+            = link_to @post.account.full_name, root_url(host: "#{@post.account.blog_alias}.#{request.domain}")
+
+        %span.post-title
+          = @post.title
+        .shortline
+
+        .post-content
+          = @post.content.html_safe
+
+        .row
+          .col-md-9
+            = commontator_thread(@post)
+          .col-md-3.text-right
+            .addthis_sharing_toolbox
+
+
+        = content_for :head do
+          %script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53aaf0275b415e45", :type => "text/javascript"}
+          - unless @post.blank?
+            %meta{:content => "videopage7.com – #{@post.title}", :property => "og:title"}/
+            %meta{:content => "video.other", :property => "og:type"}/
+            %meta{:content => @post.the_excerpt, :property => "og:description"}/
+
+            - unless @post.video.blank?
+              - unless @post.video.encodings.blank?
+                %meta{:content => @post.video.screenshot, :property => "og:image"}/
+                %meta{:content => @post.video.url, :property => "og:video:url"}/
+                %meta{:content => @post.video.encodings.first.profile_name, :property => "og:video:type"}/
+                %meta{:content => @post.video.width, :property => "og:video:width"}/
+                %meta{:content => @post.video.height, :property => "og:video:height"}/
+      = render 'sidebar';

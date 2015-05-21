@@ -1,0 +1,36 @@
+#homepage.container
+  .row
+    = render "posts/sidebar";
+    .col-md-9
+      #myCarousel.carousel.slide{"data-interval" => "3000", "data-ride" => "carousel"}
+        / Carousel items
+        .carousel-inner
+          .active.item
+            = image_tag 'slider1.jpg'
+            .carousel-caption
+              %h2 Create your own videopage
+              %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          .item
+            = image_tag 'slider1.jpg'
+            .carousel-caption
+              %h2 Create your own videopage
+              %p Aliquam sit amet gravida nibh, facilisis gravida odio.
+          .item
+            = image_tag 'slider1.jpg'
+            .carousel-caption
+              %h2 Create your own videopage
+              %p Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+        / Carousel nav
+        %a.carousel-control.left{"data-slide" => "prev", :href => "#myCarousel"}
+          %span.glyphicon.glyphicon-chevron-left
+        %a.carousel-control.right{"data-slide" => "next", :href => "#myCarousel"}
+          %span.glyphicon.glyphicon-chevron-right
+
+      #post-carousel.owl-carousel
+        - @posts.each do |post|
+          %div
+            - unless post.screenshot.blank?
+              = link_to post_path(post) do
+                = image_tag post.screenshot, class: 'img img-responsive'
+
+            = post.title

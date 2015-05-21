@@ -1,0 +1,88 @@
+#top-header.navbar.navbar-fixed-top.navbar-inverse{:role => "navigation"}
+  .container.header-content
+    .navbar-header
+      %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{:href => posts_path}
+        - if current_account && current_account.setting.try(:show_blog_logo?)
+          = image_tag current_account.setting.blog_logo.thumb.url
+        - else
+          = image_tag 'logo.png'
+    .collapse.navbar-collapse
+      - unless current_account.blank?
+        = active_link_to "<span class='glyphicon glyphicon-th-large'></span>Manage your posts".html_safe, admin_posts_path
+        .navbar-right
+          %p.navbar-text
+            %a#profiletoggle{:href => "#"}
+              %span.icon-user
+              %span.toggle-title
+                %span.glyphicon.glyphicon-user
+                = current_account.full_name
+              %span.toggle-icon.glyphicon.glyphicon-circle-arrow-down
+          %p.navbar-text.mr0
+            = link_to "<span class='glyphicon glyphicon-off'></span>".html_safe, destroy_account_session_path, :method => 'delete', :title => 'Logout'
+      - else
+        %p.navbar-text.navbar-right
+          = link_to "Sign In", new_account_session_path
+
+- if account_signed_in?
+  #profile.container-fluid
+    .col-xs-12.col-sm-6.col-md-7.col-lg-7
+      / profileimage
+      .col-xs-5.col-sm-5.ccol-md-5.col-lg-4
+        .profileimg
+          - if !current_account.profile.avatar.blank?
+            = image_tag(current_account.profile.avatar_url, :class => 'img-responsive img-rounded')
+          - else
+            = image_tag "nouserimage.jpg", :class => "img-responsive"
+          // %a{:alt => "change profile image", :href => "#"}
+          //  %span.glyphicon.glyphicon-picture
+          //  %span.txt Change Image
+          .clearfix
+      / Welcometext
+      .col-xs-7.col-sm-7.ccol-md-7.col-lg-8.welcome
+        %h1.bob
+          %span.small Welcome
+          = succeed "#{current_account.full_name}" do
+            %br/
+        %p
+          = current_account.profile.description
+
+    / current package, settinglinks
+    .col-xs-12.col-sm-6.col-md-5.col-lg-5.bgcolor.profilesettings
+      .actions
+        .col-xs-6.bor
+          %a{:href => edit_admin_profile_path}
+            %span.glyphicon.glyphicon-user
+            Profile Setting
+        .col-xs-6
+          %a{:href => admin_orders_path}
+            %span.glyphicon.glyphicon-credit-card
+            Payment
+      %table.table.table-condensed
+        %tr
+          %td Company:
+          %td - none -
+        %tr
+          %td Account:
+          %td
+            = current_account.current_plan.name
+            user
+        %tr
+          %td e-Mail:
+          %td= current_account.email
+        %tr
+          %td
+            %strong Your promolink:
+          %td
+            %strong
+              - if current_account.promotion_code.present?
+                = promolink_url(referrer_code: current_account.promotion_code)
+              - else
+                \-
+  / Profile End
+
+

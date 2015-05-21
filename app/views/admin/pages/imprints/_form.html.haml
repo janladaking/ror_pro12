@@ -1,0 +1,10 @@
+= bootstrap_form_for(@page, layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-9", url: admin_pages_imprint_path) do |f|
+  = f.text_field :title
+  .form-group
+    %label.control-label.col-sm-3{:for => "page_content"} Content
+    .col-sm-9
+      = f.bootsy_area :content, class: 'form-control', rows: 20
+  %hr
+  = f.form_group do
+    = f.submit "Save", class: 'btn btn-primary'
+    = link_to 'Cancel', :back, class: 'btn btn-default'

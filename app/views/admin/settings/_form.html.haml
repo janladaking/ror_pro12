@@ -1,0 +1,19 @@
+= bootstrap_form_for(@setting, layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-9", url: admin_setting_path) do |f|
+  = f.text_field :blog_alias
+  = #f.select :blog_enabled, [true, false]
+
+  - if current_account.can_upload_blog_logo?
+    = f.file_field :blog_logo
+    = f.hidden_field :blog_logo_cache
+
+    - if @setting.blog_logo?
+      .form-group
+        .col-sm-9.col-sm-offset-3
+          = image_tag @setting.blog_logo.thumb.url
+          = f.check_box :remove_blog_logo
+
+  %hr
+  = f.form_group do
+    = f.submit "Save", class: 'btn btn-primary'
+    = link_to 'Cancel', :back, class: 'btn btn-default'
+    = link_to 'Open videopage', root_url(host: "#{@setting.blog_alias}.#{request.domain}"), class: 'btn btn-default', target: '_blank'

@@ -1,0 +1,5 @@
+= tabs_tag :open_tabs=>{ class: 'nav nav-tabs' } do |tab|
+  = tab.orders 'Orders', admin_orders_path
+  = tab.profile 'Profile Setting', edit_admin_profile_path
+  = tab.blog 'Blog Setting', edit_admin_setting_path
+  = tab.page 'Page Setting', edit_admin_pages_imprint_path

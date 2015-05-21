@@ -1,0 +1,122 @@
+#invoice_content
+  .row{style: "margin-bottom: 4em;"}
+    .col-xs-6
+      %h1
+        = wicked_pdf_image_tag 'bonofa_logo.png', class: 'logo'
+    .col-xs-6.text-right
+      %h1 INVOICE
+      %h3
+        %span{style: "color: #aaa;"}= order.invoice_id
+        | #{order.created_at.to_date.iso8601}
+  .row{style: "margin-bottom: 2em;"}
+    .col-xs-5
+      .panel.panel-default
+        .panel-heading
+          %h4 From: BONOFA AG
+        .panel-body
+          %p
+            Im Loch 11
+            %br
+            FL 9494 Schaan
+            %br
+            Liechtenstein
+            %br
+    .col-xs-5.col-xs-offset-2
+      .panel.panel-default
+        .panel-heading
+          %h4
+            To:
+            = account.full_name
+        .panel-body
+          %p
+            %strong
+              = "Mr/Mrs. #{order.full_name}"
+            %br
+            = "#{billing_address.address_line1}"
+            %br
+            = "#{billing_address.address_line2}"
+          %p
+            %strong Kd-Nr. | Partner-ID
+            - if account.promotion_code.present?
+              %br
+              = account.promotion_code
+  / / end client details section
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th
+          %h4 Service / Date
+        %th
+          %h4 Description
+        %th
+          %h4 Hrs/Qty
+        %th
+          %h4 Rate/Price
+        %th
+          %h4 Sub Total
+    %tbody
+      %tr
+        %td
+          %strong Videopage7
+          %br/
+          %small= order.created_at.to_date.iso8601
+        %td= "#{plan.name} Plan"
+        %td.text-right= plan_duration_human(order.plan_duration)
+        %td.text-right= money_with_cents_and_with_symbol(order.subtotal)
+        %td.text-right= money_with_cents_and_with_symbol(order.subtotal)
+      %tr
+        %td
+        %td
+        %td
+        %td
+        %td
+  .row.text-right
+    .col-xs-12
+      %p
+        Selected Payment method: Paid with #{order.card_brand} (#{order.last_4_digits})
+  .row.text-right
+    .col-xs-2.col-xs-offset-8
+      %p
+        %strong
+          Sub Total :
+          %br/
+          TAX (#{percentage_with_symbol(order.tax_percentage)}):
+          %br/
+          Total :
+          %br/
+    .col-xs-2
+      %strong
+        = money_with_cents_and_with_symbol(order.subtotal)
+        %br/
+        = money_with_cents_and_with_symbol(order.tax)
+        %br/
+        = money_with_cents_and_with_symbol(order.total)
+        %br/
+  .row{style: "margin-top: 2em;"}
+    .panel.panel-info
+      .panel-body
+        .col-xs-6
+          %p
+            %strong Bonofa AG
+          %p Commerzbank Saarbrücken
+          %p
+            SWIFT: 590 400 00
+            %br/
+            Account Number: 536 1870800
+          %p
+            IBAN: DE 62 5904 0000 0536 1870 00
+            %br/
+            BIC: COBADEFFXXX
+        .col-xs-6
+          %p
+            Öffentlichkeitsregister:
+            %br/
+            Grundbuch- und Öffentlichkeits- registeramt Vaduz
+            %br/
+            FL-0002.383.447-5
+          %p Verwaltungsräte: Mag. jur. Gerd H. Jelenik, Thomas Kulla, Detlef Tilgenkamp
+          %p Mehrwertsteuer-Nr.: 57 954 (LIECHTENSTEIN)
+          %p
+            Email: payment@bonofa.com
+          %p
+            Our general terms and conditions apply

@@ -1,0 +1,37 @@
+.container
+  .row
+    = render "sidebar"
+    #posts.col-md-9
+      - if !current_account.blank? && current_account.posts.first.blank?
+        .page-status
+          .row
+            .col-md-4
+              .bgwhite.status-done
+                .status-head
+                  .status-icon.icon-icon1
+                  %span Congratulations
+                .status-body
+                  You have created your own videopage!
+            .col-md-4
+              .bgwhite
+                .status-head
+                  .status-icon.icon-icon3
+                  %span Edit your profile
+                .status-body
+                  = link_to edit_admin_profile_path, alt: '' do
+                    Edit your own profile and create your VLOG subdomain name
+
+            .col-md-4
+              .bgwhite
+                .status-head
+                  .status-icon.icon-icon2
+                  %span Your first post
+                .status-body
+                  =link_to new_admin_post_path do
+                    Now you are ready to create your first video post
+      .row.post-container
+        = render @posts
+    = render "mobilesidebar"
+  .row
+    .col-md-9
+      = paginate @posts

@@ -1,0 +1,26 @@
+#admin-overview
+  .overview-head
+    %h2.pull-left Your posts
+    %p.text-right.pull-right.mt2.create-container
+      = link_to "Create Post", new_admin_post_path, class: "btn btn-primary"
+    %span.clearfix
+    .shortline
+
+  .overview-body
+    = render 'admin/posts/index_tabs'
+    .table-responsive
+      %table.table
+        %thead
+          %tr
+            %th Screenshot
+            %th Title
+            %th Category
+            %th Summary
+            %th Comments
+            %th Published
+            %th Created
+            %th Updated
+            %th
+        %tbody
+          = render @posts
+      = paginate @posts

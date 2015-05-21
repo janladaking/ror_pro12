@@ -1,0 +1,19 @@
+%h2 Account Profile
+.shortline.mb2
+
+%p
+  %strong
+    Name:
+  = current_account.full_name
+- if !current_account.profile.email_private?
+  %p
+    %strong Email:
+    = current_account.email
+%p
+  = image_tag(current_account.profile.avatar_url) if current_account.profile.avatar?
+
+%p
+  - if current_account.profile.blank?
+    = link_to "Create Profile", new_admin_profile_path, class: 'btn btn-primary'
+  - else
+    = link_to "Edit Profile", edit_admin_profile_path, class: 'btn btn-primary'

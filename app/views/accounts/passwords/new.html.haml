@@ -1,0 +1,18 @@
+#forgotpassword.container-fluid.login.mb1
+  .container
+    .col-xs-12.col-sm-12.col-md-7.col-lg-8
+      = image_tag 'login_teaser.png', class: 'img-responsive'
+      %h2 Customized video hosting made simple
+      %p
+        With videopage7 you found an easy way to manage and show promotional videos about products, sales pitches, bonuses, news and much more. Interact with prospective clients around the globe, generate leads and get instant feedback in a message board you control. Choose your own subdomain for controlled content management.
+    .col-xs-12.col-sm-12.col-md-5.col-lg-4
+      .well.no-padding
+        .header
+          %h2 Forgot your password?
+        .wellform
+          = bootstrap_form_for(resource, as: resource_name, layout: :horizontal, label_col: "col-sm-12", control_col: "col-sm-12", url: password_path(resource_name), html: { method: :post }) do |f|
+            = devise_error_messages!
+            = f.email_field :email, autofocus: true
+            = f.form_group do
+              = f.submit "Send me reset password instructions", class: 'btn btn-secondary'
+              = render "accounts/shared/links"

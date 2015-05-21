@@ -1,0 +1,14 @@
+%h2 Account Setting
+.shortline.mb2
+
+%p
+  %strong
+    Blog alias:
+  = @setting.blog_alias
+%p
+  %strong
+    Blog enabled:
+  = @setting.blog_enabled
+
+%p
+  = link_to "Edit Setting", edit_admin_setting_path

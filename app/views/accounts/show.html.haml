@@ -1,0 +1,65 @@
+= render 'profile_videos_tabs'
+#showprofile
+  .row
+    .col-md-12
+      .row.mt2
+        .col-md-12
+          .row.mb2
+            .col-md-2.prelative
+              .follower-count.img-circle{:title => "Followers"}
+                = @account.followers_count
+              - if !@account.profile.avatar.blank?
+                = image_tag(@account.profile.avatar_url, :class => 'img-responsive img-rounded')
+              - else
+                = image_tag "nouserimage.jpg", :class => "img-responsive"
+            .col-md-7
+              %h2.profile-fullname
+                = @account.full_name
+              %span
+                - if !@account.profile.email_private?
+                  = @account.email
+            .col-md-3.show-blogalias.text-right
+              %strong Blog Alias:
+              = @account.setting.blog_alias
+          %hr
+          %p
+            %strong Description
+            = @account.profile.description
+
+            %p.help
+              Your blog domain is
+              %strong
+                = link_to "#{@account.setting.blog_alias}.#{request.domain}", "http://#{@account.setting.blog_alias}.#{request.domain}"
+            %p
+              %strong Followers:
+              = @account.followers_count
+
+            %p
+              - if !current_account.blank? && @account!=current_account
+                - unless current_account.following?(@account)
+                  = link_to follow_account_path(@account), method: :put, class: 'btn btn-primary' do
+                    Follow
+                - else
+                  = link_to unfollow_account_path(@account), method: :put, class: 'btn btn-danger' do
+                    Unfollow
+        %span.clearfix
+        %hr
+        .col-md-12.profile-actions
+          %p
+            - if @account == current_account
+              = link_to 'Orders', admin_orders_path, class: 'btn btn-default'
+              = link_to 'Edit Profile', edit_admin_profile_path, class: 'btn btn-default'
+              = link_to 'Edit Imprint Page', edit_admin_pages_imprint_path, class: 'btn btn-default'
+              = link_to 'Blog Settings', edit_admin_setting_path, class: 'btn btn-default'
+
+            - if !current_account.blank? && @account!=current_account
+              - unless current_account.following?(@account)
+                = link_to follow_account_path(@account), method: :put, class: 'btn btn-primary' do
+                  Follow
+              - else
+                = link_to unfollow_account_path(@account), method: :put, class: 'btn btn-danger' do
+                  Unfollow
+
+            - if !@account.pages.find_by(slug: 'imprint').blank?
+              = link_to "Imprint", imprint_account_path(@account), class: 'btn btn-primary'
+
